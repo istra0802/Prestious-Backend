@@ -75,20 +75,26 @@ async function sendNewsletter(req, res) {
 
 async function getNewsletterRecipients(req, res) {
   try {
-  
-    const recipients = await User.find({newsletterSent:true});
-    console.log(recipients, "Recipients with newsletterSent true");
-    
-    const totalCount = recipients.length;
-    res.setHeader('X-Total-Count', totalCount);
+    const recipients = await User.find({ newsletterSent: true });
 
-    return res.status(200).json(recipients);
+    // Map the recipients to include an 'id' key
+    const formattedRecipients = recipients.map(user => ({
+      id: user._id, // Assuming the user model has an '_id' field
+      email: user.email // Include other fields as needed
+    }));
+
+    console.log(formattedRecipients, " ddc")
+    // Set the X-Total-Count header
+    res.setHeader('X-Total-Count', formattedRecipients.length);
+
+    // Return the response with the formatted recipients
+    return res.status(200).json({ data: formattedRecipients });
   } catch (error) {
     console.error("Error retrieving newsletter recipients:", error);
     return res.status(500).json({ message: "Internal server error" });
   }
 }
-        
+    
 
 module.exports = {
   sendNewsletter,
