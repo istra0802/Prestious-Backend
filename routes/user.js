@@ -1,20 +1,23 @@
 const express = require("express");
 
-const { handleGetAllUsers, getUserById,updateUserById , deleteUserById, createNewUser} = require("../controllers/user")
+const {
+  sendNewsletter,
+  getNewsletterRecipients,
+} = require("../controllers/user");
+
+
 const router = express.Router();
 
+// router.route("/").get(handleGetAllUsers).post(createNewUser);
 
-router.route("/")
-.get(handleGetAllUsers)
-.post(createNewUser)
+router.route("/newsletter")
+.post(sendNewsletter)
+// .get(getNewsletterRecipients);
 
-
-
-router
- .route("/:id")
- .get(getUserById)
- .patch(updateUserById)
- .delete(deleteUserById)
-
+// router
+//   .route("/:id")
+//   .get(getUserById)
+//   .patch(updateUserById)
+//   .delete(deleteUserById);
 
 module.exports = router;

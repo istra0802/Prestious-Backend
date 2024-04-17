@@ -15,3 +15,37 @@
  1711457278820: ::1 DELETE /api/users/6602b056b72192679068fca9
  1711457296170: ::1 POST /api/users
  1711457308938: ::1 POST /api/users
+ 1713330264138: ::1 GET /api/users/6602b056b72192679068fca9
+ 1713330353898: ::1 POST /api/users
+ 1713330568923: ::1 GET /api/users/6602c410407776a640315328
+ 1713331075082: ::1 POST /api/users
+ 1713331090375: ::1 POST /api/users
+ 1713331129930: ::1 POST /api/users
+ 1713331182443: ::1 POST /api/users
+ 1713331231557: ::1 POST /api/users
+ 1713331280579: ::1 POST /api/users
+ 1713331431732: ::1 POST /api/users
+ 1713332174872: ::1 POST /api/users/newsletter
+ 1713332226178: ::1 POST /api/users/newsletter
+ 1713334212060: ::1 POST /api/users/newsletter
+ 1713334561395: ::1 POST /api/users/newsletter
+ 1713335712794: ::1 POST /api/users/newsletter
+ 1713335759522: ::1 POST /api/users/newsletter
+ 1713335841392: ::1 POST /api/users/newsletter
+ 1713335900440: ::1 POST /api/users/newsletter
+ 1713335931542: ::1 POST /api/users/newsletter
+ 1713336039020: ::1 POST /api/users/newsletter
+ 1713336170550: ::1 POST /api/users/newsletter
+ 1713336249305: ::1 POST /api/users/newsletter
+ 1713336377547: ::1 POST /api/users/newsletter
+ 1713336601735: ::1 POST /api/users/newsletter
+ 1713336682293: ::1 POST /api/users/newsletter
+ 1713341051466: ::1 OPTIONS /api/users/newsletter
+ 1713341063919: ::1 GET /
+ 1713341226793: ::1 OPTIONS /api/users/newsletter
+ 1713341630089: ::1 POST /api/users/newsletter
+ 1713354340955: ::1 POST /api/users/newsletter
+ 1713354348973: ::1 POST /api/users/newsletter
+ 1713354395436: ::1 POST /api/users/newsletter
+ 1713354466019: ::1 GET /api/users/newsletter
+ 1713354751256: ::1 POST /api/users/newsletter

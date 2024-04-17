@@ -22,6 +22,10 @@ const userSchema = new mongoose.Schema({
     gender: {
         type: String,
     },
+    newsletterSent: {
+        type: Boolean,
+        default: false, // Initially, newsletterSent is false for all users
+    },
 },
 { timestamps: true }
 )
