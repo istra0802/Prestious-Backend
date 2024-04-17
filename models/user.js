@@ -1,27 +1,27 @@
 const { default: mongoose } = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-    firstName: {
-        type: String,
-        required: true,
-    },
+    // firstName: {
+    //     type: String,
+    //     required: true,
+    // },
 
-    lastName: {
-        type: String,
+    // lastName: {
+    //     type: String,
 
-    },
+    // },
     email: {
         type: String,
         required: true,
         unique: true,
     },
-    jobTitle: {
-        type: String,
+    // jobTitle: {
+    //     type: String,
 
-    },
-    gender: {
-        type: String,
-    },
+    // },
+    // gender: {
+    //     type: String,
+    // },
     newsletterSent: {
         type: Boolean,
         default: false, // Initially, newsletterSent is false for all users

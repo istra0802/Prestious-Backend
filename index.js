@@ -16,6 +16,7 @@ connectionMongoDb('mongodb+srv://isha:isha2002@cluster0.omniv6e.mongodb.net/mong
 // Define CORS options
 const corsOptions = {
   origin: "*", // Replace with the origins of your frontend
+  exposedHeaders: ['X-Total-Count'],
 };
 
 // middleware plugin
