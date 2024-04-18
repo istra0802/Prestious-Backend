@@ -8,14 +8,29 @@ async function handleGetAllUsers(req,res) {
   
 }
 
-async function getUserById(req,res) {
-    const user = await User.findById(req.params.id)
-    if (!user) {
-        return res.status(404).json({ message: " user not found " })
-    }
-    return res.json(user)
-}
  
+async function getUser(req, res) {
+    try {
+      const users = await User.find();
+      console.log("userss",users)
+      // Send the users as a JSON response
+      const totalCount = await User.countDocuments(); // Get the total count of users
+      
+      // Set the X-Total-Count header in the response
+      res.setHeader('X-Total-Count', totalCount);
+
+      const formattedUsers = users.map(user => ({
+        id: user._id.toString(), // Convert ObjectId to string
+        ...user.toObject(), // Include other user fields
+      }));
+      
+      res.json({ data: formattedUsers });
+    } catch (error) {
+      console.error('Error fetching user list:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  }
+  
 async function updateUserById(req, res) {
     const user = await User.findByIdAndUpdate(req.params.id, {lastName : "Changed" })
 
@@ -35,31 +50,31 @@ async function deleteUserById(req, res) {
 }
 
 async function createNewUser(req,res) {
-    console.log('insid e post req')
-    const body = req.body;
-    // console.log(body, " ======================== n")
-    if (!body, !body.first_name) {
-        return res.status(400).json({ message: "enter the first name " })
-    }
-    
-    const result = await User({
-        firstName: body.first_name,
-        lastName: body.last_name,
-        email: body.email,
-        gender: body.gender,
-        jobTitle: body.job_title,
-
-    })
-    await result.save()
-    console.log(result)
-    return res.status(201).json({ message: " user created " })
+    console.log('inside post req')  
+    try{
+        const {name, email, number, subject, message}=req.body;
+        if (!name) {
+            return res.status(400).json({ message: "enter the first name " })
+        }
+        const newUser = new User({
+                name,
+                number,
+                email,
+                subject,
+                message,       
+            })
+            await newUser.save()
+             return res.status(201).json({ message: "user created" })
+    } catch (error) {
+        console.error("An error occurred:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+      }        
 }
 
 module.exports = {
     handleGetAllUsers,
-    getUserById,
+    getUser,
     updateUserById,
     deleteUserById,
     createNewUser,
-
 }

@@ -1,18 +1,20 @@
 const express = require("express");
 
-const { handleGetAllUsers, getUserById,updateUserById , deleteUserById, createNewUser} = require("../controllers/user")
+const { handleGetAllUsers, getUser,updateUserById , deleteUserById, createNewUser} = require("../controllers/user")
 const router = express.Router();
 
 
 router.route("/")
 .get(handleGetAllUsers)
+
+router.route("/contact")
 .post(createNewUser)
 
-
+router.route("/user")
+.get(getUser)
 
 router
  .route("/:id")
- .get(getUserById)
  .patch(updateUserById)
  .delete(deleteUserById)
 

@@ -1,4 +1,6 @@
 const express = require("express");
+
+const cors = require('cors');
 // const users = require("./MOCK_DATA.json")
 const app = express();
 const port = 8000;
@@ -17,6 +19,17 @@ app.use(express.urlencoded({ extended: false }))
 
 app.use(logReqRes('log.txt'))
 
+// Allow requests from specified origins
+const corsOptions = {
+  origin: "*", // Replace with the origin of your frontend
+};
+
+app.use(cors(corsOptions));
+
+
+app.use(cors({
+  exposedHeaders: 'X-Total-Count', // Expose X-Total-Count header
+}));
 
 app.use("/api/users",userRouter)
 app.listen(port, () => console.log(`Server started at ${port}`))

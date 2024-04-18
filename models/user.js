@@ -1,25 +1,23 @@
 const { default: mongoose } = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-    firstName: {
+    name: {
         type: String,
         required: true,
     },
-
-    lastName: {
-        type: String,
-
+    number: {
+        type:Number,
+        required:true,
     },
     email: {
         type: String,
         required: true,
         unique: true,
     },
-    jobTitle: {
+    subject: {
         type: String,
-
     },
-    gender: {
+    message: {
         type: String,
     },
 },
