@@ -109,7 +109,7 @@ async function createNewUser(req, res) {
 
 async function getUser(req, res) {
   try {
-    const users = await User.find();
+    const users = await User.find({ newsletterSent: false });
     console.log("userss", users);
     // Send the users as a JSON response
     const totalCount = await User.countDocuments(); // Get the total count of users
