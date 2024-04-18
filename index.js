@@ -31,6 +31,7 @@ app.use(logReqRes('log.txt'))
 app.use("/api/users",userRouter)
 app.listen(port, () => console.log(`Server started at ${port}`))
 
+//good
 // good practise  to make hybrid server
 //  if i want to show the json data than write api in the route 
 // if i want o show html data than do not add api in the route 
