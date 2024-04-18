@@ -221,3 +221,11 @@
  1713363542001: ::1 GET /api/users/newsletter
  1713363551046: ::1 GET /api/users/newsletter
  1713363552299: ::1 GET /api/users/newsletter
+ 1713416089775: ::1 GET /api/users/newsletter
+ 1713416115958: ::1 GET /api/users/newsletter
+ 1713416160609: ::1 GET /api/users/newsletter
+ 1713416169497: ::1 GET /api/users/newsletter
+ 1713416170508: ::1 GET /api/users/newsletter
+ 1713416220716: ::1 GET /api/users/newsletter
+ 1713416281284: ::1 GET /api/users/newsletter
+ 1713416295819: ::1 GET /api/users/newsletter
