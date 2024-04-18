@@ -3,11 +3,11 @@ const { default: mongoose } = require("mongoose");
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true,
+        required: false,
     },
     number: {
         type:Number,
-        required:true,
+        required:false,
     },
     email: {
         type: String,
@@ -20,6 +20,10 @@ const userSchema = new mongoose.Schema({
     message: {
         type: String,
     },
+    newsletterSent: {
+        type: Boolean,
+        default:false,
+    }
 },
 { timestamps: true }
 )

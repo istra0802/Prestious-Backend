@@ -1,30 +1,25 @@
 const express = require("express");
-
 const cors = require('cors');
-// const users = require("./MOCK_DATA.json")
+const bodyParser = require("body-parser");
 const app = express();
 const port = 8000;
 const userRouter = require("./routes/user")
 const { logReqRes } = require("./middlewares")
-
 const { connectionMongoDb } = require("./connection")
-// connection
 
 connectionMongoDb('mongodb+srv://isha:isha2002@cluster0.omniv6e.mongodb.net/mongoDbTry?retryWrites=true&w=majority&appName=Cluster0').then(() => console.log("mongo connected ")).catch((err) => console.log(err))
 
-app.use(express.json())
-
-// middleware plugin
-app.use(express.urlencoded({ extended: false }))
-
-app.use(logReqRes('log.txt'))
-
-// Allow requests from specified origins
+// Define CORS options
 const corsOptions = {
-  origin: "*", // Replace with the origin of your frontend
+  origin: "*", 
+  exposedHeaders: ['X-Total-Count'],
 };
 
+// middleware plugin
+app.use(express.json())
 app.use(cors(corsOptions));
+app.use(express.urlencoded({ extended: false }))
+app.use(logReqRes('log.txt'))
 
 
 app.use(cors({
@@ -33,6 +28,17 @@ app.use(cors({
 
 app.use("/api/users",userRouter)
 app.listen(port, () => console.log(`Server started at ${port}`))
+
+
+
+
+
+
+
+
+
+
+
 
 //good
 // good practise  to make hybrid server
