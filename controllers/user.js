@@ -2,6 +2,7 @@ const User = require("../models/user");
 const nodemailer = require("nodemailer");
 const ejs = require("ejs");
 const path = require("path");
+const WebSocket=require("ws")
 
 
 const transporter = nodemailer.createTransport({
@@ -89,6 +90,10 @@ async function createNewUser(req, res) {
   console.log("inside post req");
   try {
     const { name, email, number, subject, message } = req.body;
+
+    if (!validateEmail(email)) {
+      return res.status(400).json({ message: "Invalid email address" });
+    }
     if (!name) {
       return res.status(400).json({ message: "enter the first name " });
     }
@@ -100,12 +105,42 @@ async function createNewUser(req, res) {
       message,
     });
     await newUser.save();
-    return res.status(201).json({ message: "user created" });
+
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "shrutimoradiya01@gmail.com",
+        pass: "mgtx ridb fexv hidl",
+      },
+    });
+    const mailOptions = {
+      from: "shrutimoradiya01@gmail.com",
+      to: email,
+      subject: "New Query has been arrived",
+      text: `A new user has been created:\nName: ${name}\nEmail: ${email}\nNumber: ${number}\nSubject: ${subject}\nMessage: ${message}`,
+    };
+
+    
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error("Error sending email:", error);
+      } else {
+        console.log("Email sent:", info.response);
+      }
+    });
+    return res.status(201).json({ message: "User created" });
+   
   } catch (error) {
     console.error("An error occurred:", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 }
+function validateEmail(email) {
+  const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  return re.test(String(email).toLowerCase());
+}
+
 
 async function getUser(req, res) {
   try {
@@ -128,10 +163,39 @@ async function getUser(req, res) {
     res.status(500).json({ message: "Internal Server Error" });
   }
 }
-module.exports = {
 
+async function getNewUsersCount(req, res) {
+  try {
+    const newUsersCount = await User.countDocuments({ newsletterSent: false });
+    res.json({ count: newUsersCount });
+  } catch (error) {
+    console.error("Error fetching new users count:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+}
+
+// const authUser=asyncHandler(async(req,res)=>{
+//   const isValidate=yup.object({
+//     email:yup.string().email().required(),
+//     password:yup.string(),
+//   })
+//   const x = await isValidate.validate(req.body);
+//   const user = await User.findOne({ email: x.email });
+//   if (user && user.isActive == true && (await user.matchPassword(x.password))) {
+//     const token = generateToken(user._id);
+//     res.json({
+//       _id:user._id,
+//       email:user.email,
+//     })
+//   }else{
+//     res.send({message:"Invalid Email or Password"})
+//   }
+// })
+
+module.exports = {
   getUser,
   createNewUser,
   sendNewsletter,
   getNewsletterRecipients,
+  getNewUsersCount
 };

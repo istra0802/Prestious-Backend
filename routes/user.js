@@ -5,6 +5,7 @@ const {
   createNewUser,
   sendNewsletter,
   getNewsletterRecipients,
+  getNewUsersCount,
 } = require("../controllers/user");
 
 const router = express.Router();
@@ -12,6 +13,8 @@ const router = express.Router();
 router.route("/contact").post(createNewUser);
 
 router.route("/user").get(getUser);
+
+router.route("/newuser").get(getNewUsersCount)
 
 router.route("/newsletter").post(sendNewsletter).get(getNewsletterRecipients);
 
