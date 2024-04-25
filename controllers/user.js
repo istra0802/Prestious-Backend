@@ -2,7 +2,7 @@ const User = require("../models/user");
 const nodemailer = require("nodemailer");
 const ejs = require("ejs");
 const path = require("path");
-const WebSocket=require("ws")
+
 
 
 const transporter = nodemailer.createTransport({
@@ -91,7 +91,7 @@ async function createNewUser(req, res) {
   try {
     const { name, email, number, subject, message } = req.body;
 
-    if (!validateEmail(email)) {
+    if (!email) {
       return res.status(400).json({ message: "Invalid email address" });
     }
     if (!name) {
@@ -136,10 +136,6 @@ async function createNewUser(req, res) {
     res.status(500).json({ message: "Internal Server Error" });
   }
 }
-function validateEmail(email) {
-  const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  return re.test(String(email).toLowerCase());
-}
 
 
 async function getUser(req, res) {
@@ -167,6 +163,7 @@ async function getUser(req, res) {
 async function getNewUsersCount(req, res) {
   try {
     const newUsersCount = await User.countDocuments({ newsletterSent: false });
+    console.log("newwww",newUsersCount)
     res.json({ count: newUsersCount });
   } catch (error) {
     console.error("Error fetching new users count:", error);
@@ -174,24 +171,28 @@ async function getNewUsersCount(req, res) {
   }
 }
 
-// const authUser=asyncHandler(async(req,res)=>{
-//   const isValidate=yup.object({
-//     email:yup.string().email().required(),
-//     password:yup.string(),
-//   })
-//   const x = await isValidate.validate(req.body);
-//   const user = await User.findOne({ email: x.email });
-//   if (user && user.isActive == true && (await user.matchPassword(x.password))) {
-//     const token = generateToken(user._id);
-//     res.json({
-//       _id:user._id,
-//       email:user.email,
-//     })
-//   }else{
-//     res.send({message:"Invalid Email or Password"})
-//   }
-// })
+// async function Login(req,res) {
+//   const { username, password } = req.body;
+//   const user = await User.findOne({ username });
 
+//   if (!user) {
+//     return res.status(400).json({ message: 'User not found' });
+//   }
+
+//   const isPasswordValid = await bcrypt.compare(password, user.password);
+
+//   if (!isPasswordValid) {
+//     return res.status(401).json({ message: 'Invalid password' });
+//   }
+
+//   // Generate JWT token
+//   const token = jwt.sign({ username }, 'secret', { expiresIn: '1h' });
+
+//   res.json({ token });
+// }
+// async function Logout(req,res){
+//   res.json({ message: 'Logged out successfully' });
+// }
 module.exports = {
   getUser,
   createNewUser,
