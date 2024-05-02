@@ -116,7 +116,7 @@ async function createNewUser(req, res) {
     });
     const mailOptions = {
       from: "shrutimoradiya01@gmail.com",
-      to: email,
+      to: "support@prestious.com",
       subject: "New Query has been arrived",
       text: `A new user has been created:\nName: ${name}\nEmail: ${email}\nNumber: ${number}\nSubject: ${subject}\nMessage: ${message}`,
     };
@@ -140,25 +140,31 @@ async function createNewUser(req, res) {
 
 async function getUser(req, res) {
   try {
-    const users = await User.find({ newsletterSent: false });
-    console.log("userss", users);
-    // Send the users as a JSON response
-    const totalCount = await User.countDocuments(); // Get the total count of users
+    const page = parseInt(req.query.page) || 1; // Parse the page parameter from query string
+    const perPage = parseInt(req.query.perPage) || 10; // Parse the perPage parameter from query string
+    const startIndex = (page - 1) * perPage;
+    const endIndex = page * perPage;
 
-    // Set the X-Total-Count header in the response
-    res.setHeader("X-Total-Count", totalCount);
+    const users = await User.find({ newsletterSent: false })
+      .skip(startIndex) // Skip records to implement pagination
+      .limit(perPage); // Limit the number of records per page
+
+    const totalCount = await User.countDocuments({ newsletterSent: false }); // Get the total count of users
+
+    res.setHeader("X-Total-Count", totalCount); // Set the X-Total-Count header
 
     const formattedUsers = users.map((user) => ({
-      id: user._id.toString(), // Convert ObjectId to string
-      ...user.toObject(), // Include other user fields
+      id: user._id.toString(),
+      ...user.toObject(),
     }));
 
-    res.json({ data: formattedUsers });
+    res.json({ data: formattedUsers, page, perPage, totalCount });
   } catch (error) {
     console.error("Error fetching user list:", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 }
+
 
 async function getNewUsersCount(req, res) {
   try {
