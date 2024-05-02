@@ -3,8 +3,6 @@ const nodemailer = require("nodemailer");
 const ejs = require("ejs");
 const path = require("path");
 
-
-
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -25,6 +23,43 @@ async function sendEmail(email, subject, templateFile, data) {
       to: email,
       subject: subject,
       html: html,
+      attachments: [
+        {
+          filename: "image-5.png",
+          path: "images/image-5.png",
+          cid: "uniq-mailtrap.png",
+        },
+        {
+          filename: "image-6.png",
+          path: "images/image-6.png",
+          cid: "uniq-mailtrap2.png",
+        },
+        {
+          filename: "image-7.png",
+          path: "images/image-7.png",
+          cid: "uniq-mailtrap3.png",
+        },
+        {
+          filename: "image-1.png",
+          path: "images/image-1.png",
+          cid: "uniq-mailtrap4.png",
+        },
+        {
+          filename: "image-2.png",
+          path: "images/image-2.png",
+          cid: "uniq-mailtrap5.png",
+        },
+        {
+          filename: "image-3.png",
+          path: "images/image-3.png",
+          cid: "uniq-mailtrap6.png",
+        },
+        {
+          filename: "image-4.png",
+          path: "images/image-4.png",
+          cid: "uniq-mailtrap7.png",
+        }
+      ],
     });
     console.log("Email sent successfully");
   } catch (error) {
@@ -33,6 +68,26 @@ async function sendEmail(email, subject, templateFile, data) {
   }
 }
 
+async function sendCompanyEmail(email, subject, templateFile, data) {
+  try {
+    const html = await ejs.renderFile(
+      path.join(__dirname, "email_templates", templateFile),
+      data
+    );
+
+    await transporter.sendMail({
+      from: "istra0802@gmail.com", // Replace with your Gmail email
+      to: email,
+      subject: subject,
+      html: html,
+     
+    });
+    console.log("Email sent successfully");
+  } catch (error) {
+    console.error("Error sending email:", error);
+    throw new Error("Failed to send email");
+  }
+}
 async function sendNewsletter(req, res) {
   try {
     const { email } = req.body;
@@ -52,12 +107,11 @@ async function sendNewsletter(req, res) {
     const compnaySubject = `New subscriber have been added and the email is ${email}`;
     const result = await newUser.save();
     const subject = "Thank You For Subscribing";
-    // Send the newsletter
+  
     await sendEmail(email, subject, "email_template.ejs", {});
-    await sendEmail(companyName, compnaySubject,"company_template.ejs",{});
+    await sendCompanyEmail(companyName, compnaySubject, "company_template.ejs", {});
 
 
-    // Update the users to mark that newsletter has been sent
     await User.updateMany({ email }, { $set: { newsletterSent: true } });
 
     return res.status(200).json({ message: "Newsletter sent successfully" });
@@ -109,7 +163,6 @@ async function createNewUser(req, res) {
     });
     await newUser.save();
 
-
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -124,7 +177,6 @@ async function createNewUser(req, res) {
       text: `A new user has been created:\nName: ${name}\nEmail: ${email}\nNumber: ${number}\nSubject: ${subject}\nMessage: ${message}`,
     };
 
-    
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
         console.error("Error sending email:", error);
@@ -133,13 +185,11 @@ async function createNewUser(req, res) {
       }
     });
     return res.status(201).json({ message: "User created" });
-   
   } catch (error) {
     console.error("An error occurred:", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 }
-
 
 async function getUser(req, res) {
   try {
@@ -168,11 +218,10 @@ async function getUser(req, res) {
   }
 }
 
-
 async function getNewUsersCount(req, res) {
   try {
     const newUsersCount = await User.countDocuments({ newsletterSent: false });
-    console.log("newwww",newUsersCount)
+    console.log("newwww", newUsersCount);
     res.json({ count: newUsersCount });
   } catch (error) {
     console.error("Error fetching new users count:", error);
@@ -207,5 +256,5 @@ module.exports = {
   createNewUser,
   sendNewsletter,
   getNewsletterRecipients,
-  getNewUsersCount
+  getNewUsersCount,
 };

@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require('cors');
+const multer = require('multer')
 const bodyParser = require("body-parser");
 const app = express();
 const port = 8000;
@@ -20,7 +21,7 @@ app.use(express.json())
 app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: false }))
 app.use(logReqRes('log.txt'))
-
+app.use('/images', express.static('images'))
 
 app.use(cors({
   exposedHeaders: 'X-Total-Count', // Expose X-Total-Count header
@@ -28,6 +29,8 @@ app.use(cors({
 
 app.use("/api/users",userRouter)
 app.listen(port, () => console.log(`Server started at ${port}`))
+
+
 
 
 
