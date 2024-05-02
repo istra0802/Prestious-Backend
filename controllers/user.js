@@ -48,11 +48,14 @@ async function sendNewsletter(req, res) {
       email: body.email,
     });
 
+    const companyName = "istra0802@gmail.com";
+    const compnaySubject = `New subscriber have been added and the email is ${email}`;
     const result = await newUser.save();
     const subject = "Thank You For Subscribing";
-
     // Send the newsletter
     await sendEmail(email, subject, "email_template.ejs", {});
+    await sendEmail(companyName, compnaySubject,"company_template.ejs",{});
+
 
     // Update the users to mark that newsletter has been sent
     await User.updateMany({ email }, { $set: { newsletterSent: true } });
